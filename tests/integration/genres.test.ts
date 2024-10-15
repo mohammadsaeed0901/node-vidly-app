@@ -2,14 +2,16 @@ import request from "supertest";
 import { Genre } from "../../models/genre";
 import { User } from "../../models/user";
 import mongoose from "mongoose";
-
+import app from "../../src/index";
+import { type App } from "supertest/types";
 
 describe("/api/genres", () => {
-    let server;
-    beforeEach(() => { server = require("../../index"); });
+    let server: App;
+    
+    beforeEach(async () => { server = app.listen(); });
     afterEach(async () => { 
         await Genre.deleteMany({});
-        await server.close();    
+        app.close();    
     });
 
     describe("GET /", () => {

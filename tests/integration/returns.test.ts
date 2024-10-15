@@ -1,17 +1,19 @@
-import { Rental } from "../../models/rental";
+import { IRentalDocument, Rental } from "../../models/rental";
 import mongoose from "mongoose";
 import request from "supertest";
 import { User } from "../../models/user";
 import moment from "moment";
-import { Movie } from "../../models/movie";
+import { IMovieDocument, Movie } from "../../models/movie";
+import app from "../../src/index";
+import { type App } from "supertest/types";
 
 describe("/api/returns", () => {
-    let server;
+    let server: App;
     let customerId;
     let movieId;
-    let rental;
-    let movie;
-    let token;
+    let rental: IRentalDocument;
+    let movie: IMovieDocument;
+    let token: string;
 
     const exec = () => {
         return request(server)
@@ -21,7 +23,7 @@ describe("/api/returns", () => {
     }
 
     beforeEach(async () => {
-        server = require("../../index");
+        server = app.listen();
         customerId = new mongoose.Types.ObjectId();
         movieId = new mongoose.Types.ObjectId();
         token = new User().generateAuthToken();
@@ -51,7 +53,7 @@ describe("/api/returns", () => {
      });
 
     afterEach(async () => { 
-        await server.close();    
+        app.close();    
         await Rental.deleteMany({});
         await Movie.deleteMany({});
     });
@@ -133,7 +135,7 @@ describe("/api/returns", () => {
 
         const movieInDb = await Movie.findById(movie._id);
 
-        expect(movieInDb?.numberInStock).toBe(movie.numberInStock + 1);
+        expect(movieInDb?.numberInStock).toBe(movie?.numberInStock + 1);
     });
 
     it("should return the rental if input is valid", async () => {

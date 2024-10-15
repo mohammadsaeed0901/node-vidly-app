@@ -2,9 +2,10 @@ import request from "supertest";
 import app from "../../src/index";
 import { User } from "../../models/user";
 import { Genre } from "../../models/genre";
+import { App } from "supertest/types";
 
 describe("integration auth middleware", () => {  
-    let server: any;
+    let server: App;
     let token: string;
 
     beforeEach(async () => { 
@@ -14,7 +15,7 @@ describe("integration auth middleware", () => {
 
     afterEach(async () => { 
         await Genre.deleteMany({});
-        await server.close();
+        app.close();
      });
 
     const exec = () => {

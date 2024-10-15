@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { type Document } from "mongoose";
 import Joi from "joi";
 import { genreSchema } from "./genre";
 
-const Movie = mongoose.model("Movie", new mongoose.Schema({
+const movieSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -26,7 +26,17 @@ const Movie = mongoose.model("Movie", new mongoose.Schema({
         minlength: 0,
         maxlength: 255,
     },
-}));
+})
+
+
+export interface IMovieDocument extends Document {
+    title: string;
+    genre: { _id: string; name: string; };
+    numberInStock: number;
+    dailyRentalRate: number;
+}
+
+const Movie = mongoose.model<IMovieDocument>("Movie", movieSchema);
 
 const validateMovie = (movie) => {
     const schema = Joi.object({
