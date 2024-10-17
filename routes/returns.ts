@@ -7,6 +7,41 @@ import moment from "moment";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/returns:
+ *   post:
+ *     summary: Process a movie return
+ *     tags: [Returns]
+ *     security:
+ *       - xAuthToken: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               customerId:
+ *                 type: string
+ *                 description: The ID of the customer
+ *               movieId:
+ *                 type: string
+ *                 description: The ID of the movie
+ *     responses:
+ *       200:
+ *         description: Rental processed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Rental'
+ *       400:
+ *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Rental not found
+ */
 router.post("/", auth, async (req, res) => {
     const { error } = validateReturn(req.body);
     if (error)
