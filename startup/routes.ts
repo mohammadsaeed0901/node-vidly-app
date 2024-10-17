@@ -8,9 +8,12 @@ import users from "../routes/users";
 import auth from "../routes/auth";
 import returns from "../routes/returns";
 import express, { type Application } from "express";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocs from "../src/swaggerConfig";
 
 export default function (app: Application) {
     app.use(express.json());
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
     app.use("/api/genres", genres);
     app.use("/", home);
     app.use("/api/customers", customers);

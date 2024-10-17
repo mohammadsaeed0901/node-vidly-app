@@ -1,6 +1,6 @@
 const debug = require("debug")("app:debug");
 require('dotenv').config();
-import express from "express";
+import express, { type Application } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import winston from "winston";
@@ -11,7 +11,7 @@ import config from "../startup/config";
 import validation from "../startup/validation";
 import prod from "../startup/prod";
 
-const app = express();
+const app: Application = express();
 const jwtPrivateKey = process.env.VIDLY_JWTPRIVATEKEY;
 
 logging();
